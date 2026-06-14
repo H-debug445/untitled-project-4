@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <title>WATCH MATRIX</title>
+  <style>
+    /* ── TOKENS ───────────────────────────────────────────── */
+    :root {
+      --g0: #000000;
+      --g1: #001a00;
+      --g2: #003300;
+      --g3: #006600;
+      --g4: #00cc33;
+      --g5: #00ff41;
+      --g6: #aaffaa;
+      --cyan: #00ffff;
+      --yellow: #ffff00;
+      --magenta: #ff44ff;
+      --card-bg: rgba(0, 18, 0, 0.80);
+      --card-hover: rgba(0, 35, 0, 0.95);
+      --border: var(--g3);
+      --border-bright: var(--g5);
+    }
+
+    /* ── RESET ────────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── BASE ─────────────────────────────────────────────── */
+    body {
+      background: var(--g0);
+      color: var(--g5);
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── MATRIX RAIN CANVAS ───────────────────────────────── */
+    #rain {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── SCANLINES OVERLAY ────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 3px,
+        rgba(0,0,0,0.10) 3px, rgba(0,0,0,0.10) 4px
+      );
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── LAYOUT ───────────────────────────────────────────── */
+    #app {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 64px;
+    }
+
+    /* ── HEADER ───────────────────────────────────────────── */
+    .header {
+      border: 1px solid var(--g5);
+      padding: 26px 28px 22px;
+      margin-bottom: 32px;
+      background: rgba(0, 0, 0, 0.88);
+      box-shadow:
+        0 0 0 1px var(--g3),
+        0 0 28px rgba(0,255,65,0.20),
+        inset 0 0 28px rgba(0,255,65,0.04);
+      text-align: center;
+    }
+
+    .header-eyebrow {
+      font-size: 0.68em;
+      letter-spacing: 0.55em;
+      color: var(--g3);
+      margin-bottom: 18px;
+      text-transform: uppercase;
+    }
+
+    .header-title {
+      font-size: 1.65em;
+      letter-spacing: 0.05em;
+      color: var(--g5);
+      text-shadow: 0 0 14px var(--g5), 0 0 28px rgba(0,255,65,0.4);
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .header-romanji {
+      font-size: 0.88em;
+      color: var(--g4);
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .header-ep {
+      font-size: 0.95em;
+      color: var(--g4);
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .header-ids {
+      font-size: 0.68em;
+      color: var(--g3);
+      letter-spacing: 0.10em;
+      margin-bottom: 14px;
+      line-height: 1.9;
+    }
+    .header-ids span { color: var(--g4); }
+
+    .type-badge {
+      display: inline-block;
+      border: 1px solid var(--g5);
+      padding: 4px 18px;
+      font-size: 0.72em;
+      letter-spacing: 0.40em;
+      color: var(--g5);
+      text-shadow: 0 0 8px var(--g5);
+      box-shadow: 0 0 8px rgba(0,255,65,0.25);
+    }
+
+    /* ── SECTION ──────────────────────────────────────────── */
+    .section { margin-bottom: 30px; }
+
+    .section-label {
+      font-size: 0.72em;
+      letter-spacing: 0.40em;
+      color: var(--g5);
+      border-bottom: 1px solid var(--g5);
+      padding-bottom: 7px;
+      margin-bottom: 14px;
+      text-shadow: 0 0 6px var(--g5);
+    }
+
+    .generalist-label {
+      font-size: 0.68em;
+      letter-spacing: 0.35em;
+      color: var(--g3);
+      border-bottom: 1px dashed var(--g3);
+      padding-bottom: 6px;
+      margin: 24px 0 12px;
+    }
+
+    /* ── GRID ─────────────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+      gap: 8px;
+    }
+
+    /* ── SITE CARD ────────────────────────────────────────── */
+    .card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--g5);
+      transition: border-color 0.12s, background 0.12s, box-shadow 0.12s, transform 0.12s;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      background: var(--card-hover);
+      border-color: var(--border-bright);
+      box-shadow: 0 0 16px rgba(0,255,65,0.30), inset 0 0 8px rgba(0,255,65,0.06);
+      transform: translateX(4px);
+    }
+
+    .card-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .card-arrow {
+      color: var(--g3);
+      font-size: 0.75em;
+      flex-shrink: 0;
+      transition: color 0.12s;
+    }
+    .card:hover .card-arrow { color: var(--g5); }
+
+    .card-name {
+      font-size: 0.88em;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── TAGS ─────────────────────────────────────────────── */
+    .tags {
+      display: flex;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+
+    .tag {
+      font-size: 0.56em;
+      padding: 2px 5px;
+      border: 1px solid;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .tag-anime  { border-color: var(--cyan);    color: var(--cyan); }
+    .tag-movies { border-color: var(--yellow);  color: var(--yellow); }
+    .tag-series { border-color: var(--magenta); color: var(--magenta); }
+
+    /* ── NO-SIGNAL STATE ──────────────────────────────────── */
+    .no-signal {
+      text-align: center;
+      padding: 80px 24px;
+      border: 1px dashed var(--g3);
+      background: rgba(0,0,0,0.7);
+    }
+    .no-signal-glyph {
+      font-size: 3em;
+      color: var(--g3);
+      display: block;
+      margin-bottom: 20px;
+      animation: flicker 2.4s infinite;
+    }
+    .no-signal-title {
+      font-size: 1.1em;
+      letter-spacing: 0.4em;
+      margin-bottom: 12px;
+    }
+    .no-signal-sub {
+      font-size: 0.76em;
+      color: var(--g3);
+      line-height: 2;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── MATRIX CHECKER ───────────────────────────────────── */
+    .matrix-checker {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .matrix-input {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px 14px;
+      background: rgba(0, 18, 0, 0.8);
+      border: 1px solid var(--g3);
+      color: var(--g5);
+      font-family: inherit;
+      font-size: 0.85em;
+      letter-spacing: 0.05em;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+
+    .matrix-input:focus {
+      border-color: var(--g5);
+      box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+    }
+
+    .matrix-input::placeholder {
+      color: var(--g3);
+      opacity: 0.7;
+    }
+
+    .matrix-btn {
+      padding: 10px 24px;
+      background: transparent;
+      border: 1px solid var(--g5);
+      color: var(--g5);
+      font-family: inherit;
+      font-size: 0.75em;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+
+    .matrix-btn:hover {
+      background: rgba(0, 255, 65, 0.1);
+      box-shadow: 0 0 12px rgba(0, 255, 65, 0.4);
+    }
+
+    .matrix-result {
+      margin-top: 10px;
+      font-size: 0.85em;
+      letter-spacing: 0.1em;
+      min-height: 1.2em;
+      text-shadow: 0 0 8px currentColor;
+    }
+
+    .matrix-result.found {
+      color: var(--g5);
+    }
+
+    .matrix-result.not-found {
+      color: var(--yellow);
+    }
+
+    /* ── NO MATCH STATE ───────────────────────────────────── */
+    .no-match {
+      padding: 28px;
+      border: 1px dashed var(--g3);
+      color: var(--g3);
+      font-size: 0.8em;
+      letter-spacing: 0.12em;
+      text-align: center;
+    }
+
+    /* ── DEBUG PANEL ──────────────────────────────────────── */
+    .debug-toggle {
+      display: block;
+      width: 100%;
+      margin-top: 40px;
+      padding: 9px 14px;
+      background: transparent;
+      border: 1px dashed var(--g3);
+      color: var(--g3);
+      font-family: inherit;
+      font-size: 0.68em;
+      letter-spacing: 0.25em;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.12s, color 0.12s;
+    }
+    .debug-toggle:hover { border-color: var(--g5); color: var(--g5); }
+
+    .debug-body {
+      display: none;
+      border: 1px dashed var(--g3);
+      border-top: none;
+      padding: 16px;
+      background: rgba(0,0,0,0.92);
+      font-size: 0.68em;
+      line-height: 2.1;
+    }
+    .debug-body.open { display: block; }
+    .dbk { color: var(--g3); }
+    .dbv { color: var(--g6); }
+    .db-missing { color: var(--g2); font-style: italic; }
+
+    /* ── ANIMATIONS ───────────────────────────────────────── */
+    @keyframes flicker {
+      0%,100% { opacity: 1; }
+      48% { opacity: 1; }
+      50% { opacity: 0.3; }
+      52% { opacity: 1; }
+      93% { opacity: 1; }
+      94% { opacity: 0.5; }
+      96% { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────── */
+    @media (max-width: 520px) {
+      .header-title { font-size: 1.2em; }
+      .grid { grid-template-columns: 1fr; }
+      #app { padding: 16px 12px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="rain"></canvas>
+<div id="app"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ▓▓▓  SITE CONFIGURATION — ADD YOUR STREAMING SITES HERE  ▓▓▓
+   ═══════════════════════════════════════════════════════════════
+
+   Each site entry:
+   {
+     name:  "Display Name",
+     tags:  [ "anime" | "movies" | "series" ],   ← one or more
+     url:   "https://example.com/{PARAM}/{PARAM}"
+   }
+
+   DISPLAY RULES:
+   • Anime specialist  → tags has "anime" but NOT all three
+   • Movie specialist  → tags has "movies" but NOT all three
+   • Series specialist → tags has "series" but NOT all three
+   • Generalist        → tags has ALL THREE (shown at bottom always)
+
+   When you open a page, this site shows:
+   • ANIME  → anime specialists (file order) → then generalists
+   • MOVIE  → movie specialists (file order) → then generalists
+   • TV     → series specialists (file order) → then generalists
+
+   ── AVAILABLE {PARAM} TOKENS ────────────────────────────────
+   TITLES:
+     {TITLE}                "Attack on Titan"
+     {TITLE_PLUS}           "Attack+on+Titan"
+     {TITLE_SLUG}           "attack-on-titan"
+     {TITLE_UNDERSCORE}     "attack_on_titan"
+     {TITLE_ROMANJI}        "Shingeki no Kyojin"
+     {TITLE_ROMANJI_PLUS}   "Shingeki+no+Kyojin"
+     {TITLE_ROMANJI_SLUG}   "shingeki-no-kyojin"
+     {YEAR}                 "2013"
+
+   SEASON / EPISODE (TV only):
+     {S}  {SS}  {S01}  {SEASON1}  {SEASON_DASH}
+     {E}  {EE}  {E01}  {EPISODE1} {EPISODE_DASH}
+     {EP_TITLE}  {EP_TITLE_PLUS}  {EP_TITLE_SLUG}  {EP_TITLE_UNDERSCORE}
+
+   NEXT-TO-WATCH (recommended for episode links):
+     {NEXT_S}  {NEXT_SS}  {NEXT_S01}
+     {NEXT_E}  {NEXT_EE}  {NEXT_E01}
+
+   TYPE STRINGS:
+     {TYPE}              "tv" / "anime" / "movie"
+     {TYPES}             "shows" / "anime" / "movies"
+     {TYPE_SHOW}         "show" / "movie"       (outputs "show" for anime)
+     {TYPE_SHOWS}        "shows" / "movies"     (outputs "shows" for anime)
+     {TYPE_SERIES_MOVIE} "series" / "movie"     (outputs "series" for anime)
+     {TYPE_SERIES_MOVIES}"series" / "movies"
+     {TYPE_TV}           "tv" / "movie" / "tv"  (use when site labels anime as "tv")
+     {TYPE_SERIES}       "series" / "movie"     (alias for TYPE_SERIES_MOVIE)
+     {ANIME_TYPE}        "tv" / "movie" / "ova" / "special"  (anime only)
+
+   CUSTOM TYPE MAPPING (For Edge Cases):
+     If a site uses non-standard type strings (e.g., "serial" instead of "tv"),
+     you can define a custom mapping inline instead of hardcoding it in JS.
+     
+     Syntax: {!TYPE TV="value" ANIME="value" MOVIE="value"}
+     
+     Example: {!TYPE TV="serial" ANIME="serial" MOVIE="film"}
+     • If current type is TV, outputs "serial"
+     • If current type is ANIME, outputs "serial"  
+     • If current type is MOVIE, outputs "film"
+     
+     If a type is omitted from the mapping, it falls back to the default 
+     type string ("tv", "anime", or "movie").
+
+   CUSTOM ID MAPPING:
+     If a site requires different IDs depending on the media type 
+     (e.g., TMDB for movies/TV, but AniList for anime), you can map them inline.
+     
+     Syntax: {!ID TV="param_name" ANIME="param_name" MOVIE="param_name"}
+     
+     Example: {!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"}
+     • If current type is TV, outputs the TMDB ID
+     • If current type is ANIME, outputs the ANILIST ID
+     • If current type is MOVIE, outputs the TMDB ID
+     
+     The values inside the quotes must match the parameter names 
+     (e.g., "tmdb", "anilist", "imdb", "kitsu", "tvdb", "imdb_mal").
+
+   IDs:
+     {SIMKL_ID}  {IMDB}  {TMDB}  {KITSU}
+     {ANILIST}   {TVDB}  {TVDB_SLUG}  {TVDB_EP_ID}  {IMDB_MAL}
+   ────────────────────────────────────────────────────────── */
+
+const SITES = [
+
+  /* ── ANIME SPECIALISTS ─────────────────────────────────── */
+  // Add your anime-only sites here, in your preferred order.
+  
+  {
+    name: "Enma",
+    tags: ["anime"],
+    url: "https://www.enma.lol/watch/{TITLE_SLUG}-{ANILIST}?ep={NEXT_E}"
+  },
+  
+  {
+    name: "Just4Anime",
+    tags: ["anime"],
+    url: "https://just4anime.online/watch/{ANILIST}?n={NEXT_E}&server=jin&type=sub"
+  },
+
+  {
+    name: "Shiroko",
+    tags: ["anime"],
+    url: "https://shiroko.co/watch?id={ANILIST}&n={NEXT_E}&dub=false&provider=zen"
+  },
+  
+  {
+    name: "Animax",
+    tags: ["anime"],
+    url: "https://animaxanime.vercel.app/watch/{IMDB_MAL}-{TITLE_SLUG}/{NEXT_E}"
+  },
+  
+  {
+    name: "2dhive",
+    tags: ["anime"],
+    url: "https://2dhive.com/episode?anime={IMDB_MAL}&ep_num={NEXT_E}"
+  },
+  
+  {
+    name: "AniStream",
+    tags: ["anime"],
+    url: "https://anistream.one/watch/{TITLE_SLUG}-{ANILIST}-episode-{NEXT_E}"
+  },
+  
+  {
+    name: "AniVibe",
+    tags: ["anime"],
+    url: "https://anivibe.to/watch/{TITLE_SLUG}-season-{NEXT_S}-episode-{NEXT_E}"
+  },
+  
+  {
+    name: "Luna",
+    tags: ["anime"],
+    url: "https://luna-stream.me/anime/{TITLE_SLUG}-{ANILIST}/ep{NEXT_E}/sub?host=Zenith"
+  },
+  
+  {
+    name: "Fanime",
+    tags: ["anime"],
+    url: "https://fanime.tv/watch/{ANILIST}/{TITLE_SLUG}?server=bonk&subtype=sub&eps={NEXT_E}"
+  },
+  
+  {
+    name: "Zanora",
+    tags: ["anime"],
+    url: "https://zanora.lol/watch/{ANILIST}?ep={NEXT_E}"
+  },
+  
+  {
+    name: "ANIME-DUNYA",
+    tags: ["anime"],
+    url: "https://anime-dunya.com/en/play/{IMDB_MAL}/{NEXT_E}"
+  },
+  
+  {
+    name: "Animeya",
+    tags: ["anime"],
+    url: "https://animeya.cc/watch/{TITLE_SLUG}-{ANILIST}"
+  },
+  
+  {
+    name: "Anikoto",
+    tags: ["anime"],
+    url: "https://anikoto.cz/filter?keyword={TITLE_PLUS}"
+  },
+  
+  {
+    name: "AnimeWorld",
+    tags: ["anime"],
+    url: "https://watchanimeworld.net/?s={TITLE_PLUS}"
+  },
+  
+  {
+    name: "All Manga",
+    tags: ["anime"],
+    url: "https://allmanga.to/search-anime?cty=ALL&query={TITLE}"
+  },
+  
+  {
+    name: "AnimixPlay",
+    tags: ["anime"],
+    url: "https://animixplay.fun/?q={TITLE}"
+  },
+  
+  {
+    name: "Anime Episode Series",
+    tags: ["anime"],
+    url: "https://animeepisodeseries.com/?s={TITLE_PLUS}"
+  },
+  
+  {
+    name: "KissAnime",
+    tags: ["anime"],
+    url: "https://kissanime.com.ru/Search/?s={TITLE_PLUS}"
+  },
+  
+  {
+    name: "animehub",
+    tags: ["anime"],
+    url: "https://animehub.ac/search/{TITLE_PLUS}"
+  },
+  
+  {
+    name: "UniqueStream",
+    tags: ["anime"],
+    url: "https://anime.uniquestream.net/search?q={TITLE_PLUS}"
+  },
+
+  {
+    name: "Otakutsu",
+    tags: ["anime"],
+    url: "https://otakutsu.cc/browse?query={TITLE}"
+  },
+  
+  {
+    name: "AnimeLibre",
+    tags: ["anime"],
+    url: "https://animelibre.com/en/search?q={TITLE_PLUS}&sort=name"
+  },
+  
+  {
+    name: "Animelok",
+    tags: ["anime"],
+    url: "https://animelok.online/search?keyword={TITLE_PLUS}"
+  },
+  
+  {
+    name: "MKissa",
+    tags: ["anime"],
+    url: "https://mkissa.to/search/anime?sortBy=Latest_Update&sortDirection=-1&query={TITLE_PLUS}&tr=sub&cty=ALL"
+  },
+  
+  {
+    name: "zenkai",
+    tags: ["anime"],
+    url: "https://zenkai.to/filter?keyword={TITLE_PLUS}"
+  },
+  
+  {
+    name: "Anizone",
+    tags: ["anime"],
+    url: "https://anizone.to/anime?search={TITLE_PLUS}"
+  },
+  
+  {
+    name: "4Animo",
+    tags: ["anime"],
+    url: "https://4animo.xyz/search?keyword={TITLE}"
+  },
+  
+  {
+    name: "KickAssAnime",
+    tags: ["anime"],
+    url: "https://kaa.lt/search?q={TITLE}"
+  },
+  
+  {
+    name: "Yenime",
+    tags: ["anime"],
+    url: "https://yenime.net/search?name={TITLE}&parameter=title"
+  },
+  
+  {
+    name: "AnimeVerse",
+    tags: ["anime"],
+    url: "https://animeverse.to/search?q={TITLE_PLUS}"
+  },
+  
+  {
+    name: "AniDB",
+    tags: ["anime"],
+    url: "https://anidb.app/browse?q={TITLE}"
+  },
+  
+  {
+    name: "Anify",
+    tags: ["anime"],
+    url: "https://anify.to/search/?searchtext={TITLE}"
+  },
+  
+  {
+    name: "RamenFlix",
+    tags: ["anime"],
+    url: "https://www.ramenflix.com/search?keyword={TITLE}"
+  },
+  
+  {
+    name: "AniLight",
+    tags: ["anime"],
+    url: "https://anilight.live/browse?q={TITLE_PLUS}"
+  },
+  
+  {
+    name: "Animeyubi",
+    tags: ["anime"],
+    url: "https://animeyubi.com/?search={TITLE_PLUS}"
+  },
+  
+  {
+    name: "Anibd.app",
+    tags: ["anime"],
+    url: "https://anibd.app/?s={TITLE_PLUS}"
+  },
+  
+  {
+    name: "Anime-Loads",
+    tags: ["anime"],
+    url: "https://www.anime-loads.org/search?q={TITLE_PLUS}"
+  },
+  
+  {
+    name: "AV1please",
+    tags: ["anime"],
+    url: "https://av1please.com/anime/{TITLE_SLUG}"
+  },
+  
+  /* ── MOVIE SPECIALISTS ─────────────────────────────────── */
+  
+  {
+    name: "AZMovies",
+    tags: ["movies"],
+    url: "https://azmovies.to/search?q={TITLE_PLUS}"
+  },
+
+  {
+    name: "Fsharetv",
+    tags: ["movies"],
+    url: "https://fsharetv.co/search?q={TITLE}"
+  },
+
+  /* ── SERIES SPECIALISTS ────────────────────────────────── */
+  {
+    name: "FunnierMoments",
+    tags: ["series"],
+    url: "https://www.funniermoments.net/?s={TITLE_PLUS}"
+  },
+
+  {
+    name: "MegaCartoons",
+    tags: ["series"],
+    url: "https://www.megacartoons.net/?s={TITLE_PLUS}"
+  },
+  
+  {
+    name: "B98.TV",
+    tags: ["series"],
+    url: "https://www.b98.tv/?s={TITLE_PLUS}&search=Search"
+  },
+  
+  {
+    name: "ToonTales",
+    tags: ["series"],
+    url: "https://www.toontales.net/?s={TITLE_PLUS}&search=Search"
+  },
+  
+  {
+    name: "SuperCartoons",
+    tags: ["series"],
+    url: "https://www.supercartoons.net/?s={TITLE_PLUS}&search=Search"
+  },
+  
+  /* ── MOVIES + SERIES (anime not supported) ─────────────── */
+  {
+    name: "dulo.tv (uses Anilist codes for anime)",
+    tags: ["movies", "series"],
+    url: "https://dulo.tv/#/{TYPE}/{TMDB}"
+  },
+  
+  {
+    name: "NOXX",
+    tags: ["movies", "series"],
+    url: "https://noxx.to/{TYPE}/{TITLE_SLUG}/{NEXT_S}/{NEXT_E}"
+  },
+
+  {
+    name: "YesMovies",
+    tags: ["movies", "series"],
+    url: "https://ww2.yesmovies.ag/search.html?q={TITLE_PLUS}"
+  },
+  
+  {
+    name: "KissCartoon",
+    tags: ["movies", "series"],
+    url: "https://kimcartoon.si/Search/?s={TITLE}"
+  },
+  
+  /* ── GENERALISTS (all three — shown at bottom always) ──── */
+  
+  {
+    name: "Gaiaflix (support malsync)",
+    tags: ["movies", "series", "anime"],
+    url: "https://gaiaflix.live/detail/{TMDB}?type={TYPE_TV}"
+  },
+  
+  {
+    name: "67movies",
+    tags: ["movies", "series", "anime"],
+    url: "https://67movies.net/watch/{TYPE}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+  
+  {
+    name: "hexa",
+    tags: ["movies", "series", "anime"],
+    url: "https://hexa.su/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+
+  {
+    name: "Cintaro",
+    tags: ["movies", "series", "anime"],
+    url: "https://cinetaro.tv/watch/{TMDB}?ep={NEXT_E}"
+  },
+  
+  {
+    name: "Flixtrz",
+    tags: ["movies", "series", "anime"],
+    url: "https://flixtrz.com/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+  
+  {
+    name: "Stigstream",
+    tags: ["movies", "series", "anime"],
+    url: "https://stigstream.ru/{TYPE_TV}/watch/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+  
+  {
+    name: "ChillFlix",
+    tags: ["movies", "series", "anime"],
+    url: "https://chillflix.to/watch/{TYPE_TV}-{TMDB}?play=1&season={NEXT_S}&episode={NEXT_E}"
+  },
+  
+  {
+    name: "NetPlayz",
+    tags: ["movies", "series", "anime"],
+    url: "https://netplayz.live/watch?type={TYPE_TV}&id={TMDB}&play=true&e={NEXT_E}&server=alpha"
+  },
+  
+  {
+    name: "Screenscape",
+    tags: ["movies", "series", "anime"],
+    url: "https://screenscape.me/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+  
+  {
+    name: "Cinezo",
+    tags: ["movies", "series", "anime"],
+    url: "https://www.cinezo.net/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+  
+  {
+    name: "CineBolt",
+    tags: ["movies", "series", "anime"],
+    url: "https://cinebolt.net/{TYPE_TV}/{TMDB}/watch?play=true&season={NEXT_S}&episode={NEXT_E}"
+  },
+  
+  {
+    name: "Watchott",
+    tags: ["movies", "series", "anime"],
+    url: "https://nf.watchott.ru/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+  
+  {
+    name: "Nxsha",
+    tags: ["movies", "series", "anime"],
+    url: "https://nxsha.space/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+  
+  {
+    name: "Lunara",
+    tags: ["movies", "series", "anime"],
+    url: "https://lunara.watch/watch/{TYPE_TV}/{TMDB}?season={NEXT_S}&episode={NEXT_E}"
+  },
+  
+  {
+    name: "Poprink",
+    tags: ["movies", "series", "anime"],
+    url: "https://popr.ink/watch/{TMDB}?type={TYPE_TV}&season={NEXT_S}&episode={NEXT_E}"
+  },
+  
+  {
+    name: "Icefy",
+    tags: ["movies", "series", "anime"],
+    url: "https://icefy.top/watch/{TYPE_TV}/{TMDB}?s={NEXT_S}&e={NEXT_E}"
+  },
+  
+  {
+    name: "StreamVaults",
+    tags: ["movies", "series", "anime"],
+    url: "https://streamvaults.ru/{TYPE_TV}/{TMDB}-{TITLE_SLUG}/season/{NEXT_S}/episode/{NEXT_E}"
+  },
+  
+  {
+    name: "CineVibe",
+    tags: ["movies", "series", "anime"],
+    url: 'https://cinevibe.to/watch/{TYPE_TV}/{TMDB}?season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "Nelvix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://nelvix.xyz/{TYPE_TV}/watch/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+   
+  {
+    name: "WatchFreeStreams",
+    tags: ["movies", "series", "anime"],
+    url: 'https://wfs.lol/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "AmberFlix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://www.amberflix.xyz/en/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "KaitoVault",
+    tags: ["movies", "series", "anime"],
+    url: 'https://www.kaitovault.com/watch/{TYPE_TV}/{TMDB}?season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "FluxTv",
+    tags: ["movies", "series", "anime"],
+    url: 'https://fluxtv.qzz.io/#/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "M-Zone",
+    tags: ["movies", "series", "anime"],
+    url: 'https://www.m-zone.org/watch/{TYPE_TV}/{TMDB}?season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "cinewave",
+    tags: ["movies", "series", "anime"],
+    url: 'https://watch.cinewave.qzz.io/watch/{TYPE_TV}/{TMDB}?s={NEXT_S}&e={NEXT_E}'
+  },
+  
+  {
+    name: "RedFlix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://redflix.co/{TYPE_TV}/{TMDB}/watch?season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "CandleStream",
+    tags: ["movies", "series", "anime"],
+    url: 'https://candlestream.xyz/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "1PrimeShow",
+    tags: ["movies", "series", "anime"],
+    url: 'https://1primeshow.online/{TYPE_TV}/{TMDB}/watch?season={NEXT_S}&episode={NEXT_E}'
+  },
+
+  {
+    name: "Filmex",
+    tags: ["movies", "series", "anime"],
+    url: 'https://filmex.to/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "1Shows",
+    tags: ["movies", "series", "anime"],
+    url: 'https://www.1shows.org/{!TYPE TV="tv" ANIME="tv" MOVIE="movies"}/{TMDB}?streaming=true&season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "FlixZy",
+    tags: ["movies", "series", "anime"],
+    url: 'https://flixzy.pages.dev/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "youflex",
+    tags: ["movies", "series", "anime"],
+    url: 'https://youflex.top/watch?type={TYPE_TV}&id={TMDB}&play=true&e={NEXT_E}&s={NEXT_S}&server=vidcx'
+  },
+  
+  {
+    name: "Cinebytv",
+    tags: ["movies", "series", "anime"],
+    url: 'https://cinebytv.com/watch/{TYPE_TV}/{TMDB}?season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "HDtodayz",
+    tags: ["movies", "series", "anime"],
+    url: 'https://hdtodayz.net/watch/{TYPE_TV}/{TMDB}?season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "BINGEFLIX",
+    tags: ["movies", "series", "anime"],
+    url: 'https://bingeflix.tv/{TYPE_TV}/{TMDB}?season={NEXT_S}&episode={NEXT_E}'
+  },
+  
+  {
+    name: "7REELS",
+    tags: ["movies", "series", "anime"],
+    url: 'https://7reels.cc/{TYPE_TV}/{TMDB}/watch?s={NEXT_S}&e={NEXT_E}'
+  },
+  
+  {
+    name: "Watchroo",
+    tags: ["movies", "series", "anime"],
+    url: 'https://watchroo.com/player?type={TYPE_TV}&{!TYPE TV="tv_id" ANIME="tv_id" MOVIE="movie"}={TMDB}&season_no={NEXT_S}&episode_no={NEXT_E}'
+  },
+  
+  {
+    name: "StreamGoblin",
+    tags: ["movies", "series", "anime"],
+    url: 'https://streamgoblin.com/player/{TYPE_TV}/{TMDB}{!TYPE TV="/season/" ANIME="/season/" MOVIE=" "}{NEXT_S}{!TYPE TV="/episode/" ANIME="/episode/" MOVIE=" "}{NEXT_E}'
+  },
+  
+  {
+    name: "WatchOrbit",
+    tags: ["movies", "series", "anime"],
+    url: 'https://watchorbit.me/player/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}?src=0&srckey=vidsrc'
+  },
+  
+  {
+    name: "AZseries",
+    tags: ["movies", "series", "anime"],
+    url: 'https://azseries.org/{!TYPE TV="episodes" ANIME="episodes" MOVIE="movie"}/{TITLE_SLUG}-{!TYPE TV="season" ANIME="season" MOVIE="-"}-{NEXT_S}-{!TYPE TV="episode" ANIME="episode" MOVIE="-"}-{NEXT_E}/'
+  },
+  
+  {
+    name: "ZetMoon",
+    tags: ["movies", "series", "anime"],
+    url: 'https://zetmoon.live/watch?type={!TYPE TV="tv" ANIME="tv" MOVIE="movie"}&id={TMDB}&play=true&e={NEXT_E}&s={NEXT_S}&server=playbox'
+  },
+  
+  {
+    name: "WarFlix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://warflix.nl/{!TYPE TV="series" ANIME="series" MOVIE="film"}/{TMDB}'
+  },
+  
+  {
+    name: "Snowstream",
+    tags: ["movies", "series", "anime"],
+    url: 'https://snowstream.vercel.app/{TYPE_TV}/{TMDB}/watch'
+  },
+  
+  {
+    name: "Fireflix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://fireflix.pages.dev/watch?id={TMDB}&type={!TYPE TV="tv" ANIME="tv" MOVIE="movie"}'
+  },
+  
+  {
+    name: "FlyFlix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://flyflix.net/watch/{TMDB}-{!TYPE TV="tv" ANIME="tv" MOVIE="-"}'
+  },
+  
+  {
+    name: "AuroraScreen",
+    tags: ["movies", "series", "anime"],
+    url: 'https://www.aurorascreen.org/{TYPE_TV}?id={TMDB}'
+  },
+  
+  {
+    name: "LunaStream",
+    tags: ["movies", "series", "anime"],
+    url: 'https://lunastream.watch/#/{!TYPE TV="tv" ANIME="anime/tv" MOVIE="movie"}/{!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"}'
+  },
+  
+  {
+    name: "Boredflix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://www.boredflix.tv/{TYPE_TV}/{TMDB}'
+  },
+  
+  {
+    name: "FilmCave",
+    tags: ["movies", "series", "anime"],
+    url: 'https://filmcave.ru/{!TYPE TV="tv" ANIME="tv" MOVIE="movie"}/watch/{TMDB}'
+  },
+  
+  {
+    name: "VidPlay",
+    tags: ["movies", "series", "anime"],
+    url: 'https://vidplay.to/{!TYPE TV="serial" ANIME="anime" MOVIE="film"}/{TMDB}/player'
+  },
+  
+  {
+    name: "SmashyStream",
+    tags: ["movies", "series", "anime"],
+    url: "https://flix.smashystream.xyz/{TYPE_TV}/{TMDB}"
+  },
+
+  {
+    name: "Moviebite",
+    tags: ["movies", "series", "anime"],
+    url: "https://moviebite.cc/{TYPE_TV}/{TMDB}/{TITLE_SLUG}"
+  },
+  
+  {
+    name: "ZXC[Stream]",
+    tags: ["movies", "series", "anime"],
+    url: "https://zxcprime.icu/watch/{TYPE_TV}/{TMDB}"
+  },
+    {
+    name: "watchflix",
+    tags: ["movies", "series", "anime"],
+    url: "https://watchflix.to/{TYPE_TV}/{TMDB}"
+  },
+  
+  {
+    name: "NomorFlix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://nomorflix.icu/#/{!TYPE TV="t" ANIME="a" MOVIE="m"}/{!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"}/'
+  },
+  
+  {
+    name: "AllYouCanWatch",
+    tags: ["movies", "series", "anime"],
+    url: 'https://allyoucanwatch.net/{!TYPE TV="serie" ANIME="serie" MOVIE="movie"}/{TMDB}'
+  },
+  
+  {
+    name: "PopcornMovies",
+    tags: ["movies", "series", "anime"],
+    url: 'https://popcornmovies.org/{!TYPE TV="tv-show" ANIME="tv-show" MOVIE="movie"}/{TITLE_SLUG}'
+  },
+  
+  {
+    name: "Nepu",
+    tags: ["movies", "series", "anime"],
+    url: "https://nepu.to/search/{TITLE}"
+  },
+  
+  {
+    name: "Cubeflix",
+    tags: ["movies", "series", "anime"],
+    url: "https://cubeflix.pages.dev/browse/{TITLE}"
+  },
+  
+  {
+    name: "Streamr",
+    tags: ["movies", "series", "anime"],
+    url: "https://streamr.pages.dev/search?q={TITLE}"
+  },
+  
+  {
+    name: "Way2Movies",
+    tags: ["movies", "series", "anime"],
+    url: "https://way2movies.live/search/multi/{TITLE}"
+  },
+  
+  {
+    name: "DuaFile",
+    tags: ["movies", "series", "anime"],
+    url: "https://download.duafile.com/browse?q={TITLE}"
+  },
+  
+  {
+    name: "Apexmovies",
+    tags: ["movies", "series", "anime"],
+    url: "https://apexmovies.net/{TITLE_SLUG}"
+  },
+  
+  {
+    name: "MovieBox",
+    tags: ["movies", "series", "anime"],
+    url: "https://themoviebox.org/newWeb/searchResult?keyword={TITLE_PLUS}"
+  },
+  
+  {
+    name: "m4uhd",
+    tags: ["movies", "series", "anime"],
+    url: "https://ww1.m4uhd.to/search/{TITLE_SLUG}.html"
+  },
+  
+  {
+    name: "Bflix",
+    tags: ["movies", "series", "anime"],
+    url: "https://bflix.sh/search?keyword={TITLE_PLUS}"
+  },
+  
+  {
+    name: "Onionplay",
+    tags: ["movies", "series", "anime"],
+    url: "https://onionplay.st/search/{TITLE_PLUS}"
+  },
+  
+  {
+    name: "MovieNestBD",
+    tags: ["movies", "series", "anime"],
+    url: "https://movienestbd.pics/search?q={TITLE}"
+  },
+  
+  {
+    name: "ShowBox",
+    tags: ["movies", "series", "anime"],
+    url: "https://www.showbox.media/search?keyword={TITLE_PLUS}"
+  },
+  
+  {
+    name: "ProjectFreeTv",
+    tags: ["movies", "series", "anime"],
+    url: "https://projectfreetv.sx/browse?c=movie&m=filter&keyword={TITLE_PLUS}"
+  },
+  
+  {
+    name: "Hollymoviehd",
+    tags: ["movies", "series", "anime"],
+    url: "https://hollymoviehd.cc/?s={TITLE_PLUS}"
+  },
+
+  {
+    name: "downloads-anymovies",
+    tags: ["movies", "series", "anime"],
+    url: "https://www.downloads-anymovies.co/search/search.php?q={TITLE_PLUS}"
+  },
+  
+  {
+    name: "Cinegram",
+    tags: ["movies", "series", "anime"],
+    url: "https://cinegram.tv/index.php?menu=search&query={TITLE_SLUG}"
+  },
+  
+  {
+    name: "LeVidia",
+    tags: ["movies", "series", "anime"],
+    url: "https://www.levidia.ch/search.php?q={TITLE_PLUS}&submit.x=0&submit.y=0"
+  },
+  
+];
+/* ═══════════════════════════════════════════════════════════════
+   END OF SITE CONFIGURATION
+═══════════════════════════════════════════════════════════════ */
+
+
+/* ── Matrix Rain ──────────────────────────────────────────── */
+(function () {
+  const cv = document.getElementById('rain');
+  const cx = cv.getContext('2d');
+  const JP = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+  const EN = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%&';
+  const CHARS = JP + EN;
+  const SZ = 16;
+  let drops = [], W = 0, H = 0;
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+    drops = Array.from({ length: Math.ceil(W / SZ) }, () => Math.random() * -(H / SZ));
+  }
+
+  function tick() {
+    cx.fillStyle = 'rgba(0,0,0,0.048)';
+    cx.fillRect(0, 0, W, H);
+    for (let i = 0; i < drops.length; i++) {
+      const r = Math.random();
+      cx.fillStyle = r > 0.97 ? '#ccffcc' : r > 0.85 ? '#00ff41' : '#008f11';
+      cx.font = `${r > 0.97 ? 15 : 13}px Courier New`;
+      cx.fillText(CHARS[Math.floor(Math.random() * CHARS.length)], i * SZ, drops[i] * SZ);
+      if (drops[i] * SZ > H && Math.random() > 0.975) drops[i] = -Math.random() * 20;
+      drops[i] += 0.9 + Math.random() * 0.2;
+    }
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  setInterval(tick, 52);
+})();
+
+
+/* ── Param helpers ────────────────────────────────────────── */
+
+function slugify(str) {
+  return str
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
+function underscoreify(str) {
+  return slugify(str).replace(/-/g, '_');
+}
+
+function plusify(str) {
+  return encodeURIComponent(str).replace(/%20/g, '+');
+}
+
+function pad2(value) {
+  return String(value).padStart(2, '0');
+}
+
+function expandParams(p) {
+
+  /* TITLE */
+  if (p.TITLE) {
+    p.TITLE_PLUS       ||= plusify(p.TITLE);
+    p.TITLE_SLUG       ||= slugify(p.TITLE);
+    p.TITLE_UNDERSCORE ||= underscoreify(p.TITLE);
+  }
+
+  /* ROMANJI */
+  if (p.TITLE_ROMANJI) {
+    p.TITLE_ROMANJI_PLUS ||= plusify(p.TITLE_ROMANJI);
+    p.TITLE_ROMANJI_SLUG ||= slugify(p.TITLE_ROMANJI);
+  }
+
+  /* EP TITLE */
+  if (p.EP_TITLE) {
+    p.EP_TITLE_PLUS       ||= plusify(p.EP_TITLE);
+    p.EP_TITLE_SLUG       ||= slugify(p.EP_TITLE);
+    p.EP_TITLE_UNDERSCORE ||= underscoreify(p.EP_TITLE);
+  }
+
+  /* CURRENT SEASON */
+  if (p.S) {
+    p.SS          ||= pad2(p.S);
+    p.S01         ||= pad2(p.S);
+    p.SEASON1     ||= p.S;
+    p.SEASON_DASH ||= `season-${p.S}`;
+  }
+
+  /* CURRENT EPISODE */
+  if (p.E) {
+    p.EE            ||= pad2(p.E);
+    p.E01           ||= pad2(p.E);
+    p.EPISODE1      ||= p.E;
+    p.EPISODE_DASH  ||= `episode-${p.E}`;
+  }
+
+  /* NEXT SEASON */
+  if (p.NEXT_S) {
+    p.NEXT_SS  ||= pad2(p.NEXT_S);
+    p.NEXT_S01 ||= pad2(p.NEXT_S);
+  }
+
+  /* NEXT EPISODE */
+  if (p.NEXT_E) {
+    p.NEXT_EE  ||= pad2(p.NEXT_E);
+    p.NEXT_E01 ||= pad2(p.NEXT_E);
+  }
+
+  /* TYPE DERIVATIVES */
+  const type = (p.TYPE || '').toLowerCase();
+
+  switch (type) {
+
+    case 'anime':
+      p.TYPES              ||= 'anime';
+      p.TYPE_SHOW          ||= 'show';
+      p.TYPE_SHOWS         ||= 'shows';
+      p.TYPE_SERIES_MOVIE  ||= 'series';
+      p.TYPE_SERIES_MOVIES ||= 'series';
+      p.TYPE_TV            ||= 'tv';
+      p.TYPE_SERIES        ||= 'series';
+      break;
+
+    case 'movie':
+      p.TYPES              ||= 'movies';
+      p.TYPE_SHOW          ||= 'movie';
+      p.TYPE_SHOWS         ||= 'movies';
+      p.TYPE_SERIES_MOVIE  ||= 'movie';
+      p.TYPE_SERIES_MOVIES ||= 'movies';
+      p.TYPE_TV            ||= 'movie';
+      p.TYPE_SERIES        ||= 'movie';
+      break;
+
+    case 'tv':
+      p.TYPES              ||= 'shows';
+      p.TYPE_SHOW          ||= 'show';
+      p.TYPE_SHOWS         ||= 'shows';
+      p.TYPE_SERIES_MOVIE  ||= 'series';
+      p.TYPE_SERIES_MOVIES ||= 'series';
+      p.TYPE_TV            ||= 'tv';
+      p.TYPE_SERIES        ||= 'series';
+      break;
+  }
+
+  return p;
+}
+
+function getParams() {
+  const p = {};
+
+  const aliases = {
+  t: "TITLE",
+  r: "TITLE_ROMANJI",
+  y: "YEAR",
+
+  s: "S",
+  e: "E",
+
+  ns: "NEXT_S",
+  ne: "NEXT_E",
+
+  type: "TYPE",
+  at: "ANIME_TYPE",
+
+  sid: "SIMKL_ID",
+
+  im: "IMDB",
+  tm: "TMDB",
+  ki: "KITSU",
+  al: "ANILIST",
+
+  tv: "TVDB",
+  tvs: "TVDB_SLUG",
+  tve: "TVDB_EP_ID",
+
+  mal: "IMDB_MAL"
+};
+
+  new URLSearchParams(window.location.search).forEach((value, key) => {
+    p[aliases[key] || key] = value;
+  });
+
+  return expandParams(p);
+}
+
+/* ── URL template resolver ────────────────────────────────── */
+const RAW_SAFE = new Set([
+  'TITLE_SLUG','TITLE_UNDERSCORE','TITLE_PLUS','TITLE_ROMANJI_SLUG','TITLE_ROMANJI_PLUS',
+  'EP_TITLE_SLUG','EP_TITLE_UNDERSCORE','EP_TITLE_PLUS',
+  'TVDB_SLUG','SEASON_DASH','EPISODE_DASH',
+  'TYPE','TYPES','TYPE_SHOW','TYPE_SHOWS','TYPE_SERIES_MOVIE','TYPE_SERIES_MOVIES','TYPE_TV','TYPE_SERIES','ANIME_TYPE',
+  'S','SS','S01','SEASON1','E','EE','E01','EPISODE1',
+  'NEXT_S','NEXT_SS','NEXT_S01','NEXT_E','NEXT_EE','NEXT_E01',
+  'YEAR','TMDB','IMDB','ANILIST','SIMKL_ID','KITSU','TVDB','TVDB_EP_ID','IMDB_MAL'
+]);
+
+function resolveUrl(tmpl, params) {
+  const type = getType(params); // 'anime', 'movie', or 'tv'
+  
+  return tmpl.replace(/\{([^}]+)\}/g, (_, rawKey) => {
+    let key = rawKey.trim();
+    const upperKey = key.toUpperCase();
+    
+    // ── CUSTOM TYPE MAPPING: {!TYPE TV="..." ANIME="..." MOVIE="..." } ──
+    if (upperKey.startsWith('!TYPE')) {
+      const inner = key.substring(5).trim();
+      const map = {};
+      const re = /([A-Za-z0-9_]+)\s*=\s*(["'])(.*?)\2/gi;
+      let match;
+      while ((match = re.exec(inner)) !== null) {
+        map[match[1].toUpperCase()] = match[3];
+      }
+      
+      const lookupKey = type.toUpperCase();
+      if (map[lookupKey] !== undefined) {
+        return map[lookupKey];
+      }
+      return type; // fallback to default type string if not specified
+    }
+
+    // ── CUSTOM ID MAPPING: {!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"} ──
+    if (upperKey.startsWith('!ID')) {
+      const inner = key.substring(3).trim();
+      const map = {};
+      const re = /([A-Za-z0-9_]+)\s*=\s*(["'])(.*?)\2/gi;
+      let match;
+      while ((match = re.exec(inner)) !== null) {
+        map[match[1].toUpperCase()] = match[3].toUpperCase();
+      }
+      
+      const lookupKey = type.toUpperCase();
+      if (map[lookupKey] !== undefined) {
+        const paramName = map[lookupKey];
+        const val = params[paramName];
+        if (val !== undefined && val !== '' && val !== '0') {
+          return RAW_SAFE.has(paramName) ? val : encodeURIComponent(val);
+        }
+      }
+      return ''; // fallback if ID not found or type not mapped
+    }
+
+    // ── STANDARD PARAMS ──
+    const val = params[key];
+    if (val === undefined || val === '' || val === '0') return '';
+    return RAW_SAFE.has(key) ? val : encodeURIComponent(val);
+  });
+}
+
+/* ── Media type ───────────────────────────────────────────── */
+function getType(params) {
+  const t = (params.TYPE || '').toLowerCase();
+  if (t === 'anime') return 'anime';
+  if (t === 'movie') return 'movie';
+  return 'tv';
+}
+
+/* ── Site classification ──────────────────────────────────── */
+function isGeneralist(site) {
+  return site.tags.includes('anime') && site.tags.includes('movies') && site.tags.includes('series');
+}
+
+function isSpecialistFor(site, typeKey) {
+  return !isGeneralist(site) && site.tags.includes(typeKey);
+}
+
+/* ── Tag HTML ─────────────────────────────────────────────── */
+function tagsHtml(tags) {
+  return tags.map(t => `<span class="tag tag-${t}">${t}</span>`).join('');
+}
+
+/* ── Card HTML ────────────────────────────────────────────── */
+function cardHtml(site, params) {
+  const href = resolveUrl(site.url, params);
+  return `<a class="card" href="${href}" target="_blank" rel="noopener noreferrer">
+    <span class="card-left">
+      <span class="card-arrow">&#9654;</span>
+      <span class="card-name">${site.name}</span>
+    </span>
+    <span class="tags">${tagsHtml(site.tags)}</span>
+  </a>`;
+}
+
+/* ── Domain Extractor & Checker ───────────────────────────── */
+function getDomain(urlString) {
+  if (!urlString) return '';
+  // Remove protocol and www.
+  let domain = urlString.replace(/^(https?:\/\/)?(www\.)?/i, '');
+  // Remove path, query, hash, port
+  domain = domain.split(/[\/:\?#]/)[0];
+  return domain.toLowerCase();
+}
+
+function initMatrixChecker() {
+  const input = document.getElementById('site-check-input');
+  const btn = document.getElementById('site-check-btn');
+  const result = document.getElementById('site-check-result');
+
+  if (!input || !btn || !result) return;
+
+  function check() {
+    const val = input.value.trim();
+    if (!val) {
+      result.textContent = '';
+      result.className = 'matrix-result';
+      return;
+    }
+
+    const inputDomain = getDomain(val);
+    let isFound = false;
+
+    for (const site of SITES) {
+      const siteDomain = getDomain(site.url);
+      if (siteDomain === inputDomain) {
+        isFound = true;
+        break;
+      }
+    }
+
+    if (isFound) {
+      result.textContent = '> this site is part of the matrix';
+      result.className = 'matrix-result found';
+    } else {
+      result.textContent = '> site unknown add to the matrix';
+      result.className = 'matrix-result not-found';
+    }
+  }
+
+  btn.addEventListener('click', check);
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') check();
+  });
+}
+
+/* ── Main render ──────────────────────────────────────────── */
+function render() {
+  const params = getParams();
+  const app    = document.getElementById('app');
+  const hasData = params.TYPE || params.TITLE;
+
+  /* ── No-signal state ── */
+  if (!hasData) {
+    app.innerHTML = `
+      <div class="no-signal">
+        <span class="no-signal-glyph">◈</span>
+        <div class="no-signal-title">[ NO SIGNAL RECEIVED ]</div>
+        <div class="no-signal-sub">
+          This page should be opened from a SIMKL media link.<br>
+          No stream data was found in the URL.
+        </div>
+        <div class="matrix-checker">
+          <input type="text" id="site-check-input" class="matrix-input" placeholder="Enter website link to check...">
+          <button id="site-check-btn" class="matrix-btn">CHECK DOMAIN</button>
+          <div id="site-check-result" class="matrix-result"></div>
+        </div>
+      </div>`;
+    initMatrixChecker();
+    return;
+  }
+
+  /* ── Extract display data ── */
+  const type    = getType(params);
+  const typeKey = type === 'movie' ? 'movies' : (type === 'tv' ? 'series' : type);
+
+  const title    = params.TITLE || '';
+  const romanji  = (type === 'anime' && params.TITLE_ROMANJI && params.TITLE_ROMANJI !== params.TITLE)
+                   ? params.TITLE_ROMANJI : '';
+  const year     = params.YEAR ? ` (${params.YEAR})` : '';
+  const typeLbl  = { anime: 'ANIME', movie: 'MOVIE', tv: 'SERIES' }[type];
+
+  /* Episode info */
+  let epLine = '';
+  if (type !== 'movie') {
+    const s  = params.NEXT_S  || '';
+    const e  = params.NEXT_E  || '';
+    const ss = params.NEXT_SS || (s ? String(s).padStart(2,'0') : '');
+    const ee = params.NEXT_EE || (e ? String(e).padStart(2,'0') : '');
+    if (s && e)  epLine = `S${ss} · E${ee}`;
+    else if (e)  epLine = `EP ${ee}`;
+  }
+
+  /* ID bar */
+  const idParts = [
+    params.IMDB    && `IMDB <span>${params.IMDB}</span>`,
+    params.TMDB    && `TMDB <span>${params.TMDB}</span>`,
+    params.ANILIST && `AL <span>${params.ANILIST}</span>`,
+    (type === 'anime' && params.IMDB_MAL) && `MAL <span>${params.IMDB_MAL}</span>`,
+    params.TVDB    && `TVDB <span>${params.TVDB}</span>`,
+    params.KITSU   && `Kitsu <span>${params.KITSU}</span>`,
+  ].filter(Boolean);
+
+  /* Sort sites */
+  const specialists = SITES.filter(s => isSpecialistFor(s, typeKey));
+  const generalists = SITES.filter(s => isGeneralist(s));
+
+  /* Section header text */
+  const sectionLbl = {
+    anime: '// ANIME STREAMS',
+    movie: '// MOVIE STREAMS',
+    tv:    '// SERIES STREAMS'
+  }[type];
+
+  /* ── Build HTML ── */
+  let html = `
+    <div class="header">
+      <div class="header-eyebrow">◈ WATCH MATRIX ◈</div>
+      <div class="header-title">${title}${year}</div>
+      ${romanji ? `<div class="header-romanji">${romanji}</div>` : ''}
+      ${epLine  ? `<div class="header-ep">▸ ${epLine}</div>` : ''}
+      ${idParts.length ? `<div class="header-ids">${idParts.join('  ·  ')}</div>` : ''}
+      <div class="type-badge">${typeLbl}</div>
+    </div>`;
+
+  /* Specialists section */
+  if (specialists.length > 0) {
+    html += `
+      <div class="section">
+        <div class="section-label">${sectionLbl}</div>
+        <div class="grid">${specialists.map(s => cardHtml(s, params)).join('')}</div>
+      </div>`;
+  }
+
+  /* Generalists section */
+  if (generalists.length > 0) {
+    html += `
+      <div class="section">
+        <div class="generalist-label">// GENERALIST PLATFORMS</div>
+        <div class="grid">${generalists.map(s => cardHtml(s, params)).join('')}</div>
+      </div>`;
+  }
+
+  /* Nothing configured */
+  if (!specialists.length && !generalists.length) {
+    html += `<div class="no-match">// NO STREAMS CONFIGURED FOR TYPE: ${typeLbl}</div>`;
+  }
+
+  /* Debug panel — all raw params */
+  const ALL_PARAMS = [
+    ['TITLE','TITLE_PLUS','TITLE_SLUG','TITLE_UNDERSCORE'],
+    ['TITLE_ROMANJI','TITLE_ROMANJI_PLUS','TITLE_ROMANJI_SLUG','YEAR'],
+    ['NEXT_S','NEXT_SS','NEXT_S01','NEXT_E','NEXT_EE','NEXT_E01'],
+    ['TYPE','TYPES','TYPE_SHOW','TYPE_SHOWS','TYPE_SERIES_MOVIE','TYPE_SERIES_MOVIES','TYPE_TV','TYPE_SERIES','ANIME_TYPE'],
+    ['SIMKL_ID','IMDB','TMDB','KITSU','ANILIST','TVDB','TVDB_SLUG','TVDB_EP_ID','IMDB_MAL'],
+  ];
+  const dbRows = ALL_PARAMS.flat().map(k => {
+    const v = params[k];
+    return v
+      ? `<span class="dbk">${k}</span> = <span class="dbv">${v}</span>`
+      : `<span class="db-missing">${k} — not provided</span>`;
+  }).join('<br>');
+
+  html += `
+    <button class="debug-toggle" onclick="this.nextElementSibling.classList.toggle('open')">
+      &#9654; SHOW RAW SIGNAL DATA
+    </button>
+    <div class="debug-body">${dbRows}</div>`;
+
+  app.innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>
