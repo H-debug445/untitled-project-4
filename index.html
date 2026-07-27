@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
   <link rel="icon" type="image/png" href="favicon.png">
   <title>WATCH MATRIX</title>
   <style>
@@ -494,17 +493,29 @@ const SITES = [
     tags: ["anime"],
     url: "https://shiroko.co/watch?id={ANILIST}&n={NEXT_E}&dub=false&provider=zen"
   },
-  
+
   {
+    name: "AniKitty",
+    tags: ["anime"],
+    url: "https://anikitty.moe/anime/watch?anime={ANILIST}&episode=ep-{NEXT_E}"
+  },
+  
+ /* {
     name: "Animax",
     tags: ["anime"],
     url: "https://animaxanime.vercel.app/watch/{IMDB_MAL}-{TITLE_SLUG}/{NEXT_E}"
   },
-  
+ */ 
   {
     name: "2dhive",
     tags: ["anime"],
     url: "https://2dhive.com/episode?anime={IMDB_MAL}&ep_num={NEXT_E}"
+  },
+  
+  {
+    name: "AniXo",
+    tags: ["anime"],
+    url: "https://anixo.online/watch/{ANILIST}?ep={NEXT_E}"
   },
   
   {
@@ -513,12 +524,12 @@ const SITES = [
     url: "https://anistream.one/watch/{TITLE_SLUG}-{ANILIST}-episode-{NEXT_E}"
   },
   
-  {
+   /* {
     name: "AniVibe",
     tags: ["anime"],
     url: "https://anivibe.to/watch/{TITLE_SLUG}-season-{NEXT_S}-episode-{NEXT_E}"
   },
-  
+  */
   {
     name: "Luna",
     tags: ["anime"],
@@ -526,9 +537,9 @@ const SITES = [
   },
   
   {
-    name: "Fanime",
+    name: "Sankanime",
     tags: ["anime"],
-    url: "https://fanime.tv/watch/{ANILIST}/{TITLE_SLUG}?server=bonk&subtype=sub&eps={NEXT_E}"
+    url: "https://sankanime.web.id/watch/{TITLE_SLUG}-{ANILIST}?ep={NEXT_E}"
   },
   
   {
@@ -547,6 +558,24 @@ const SITES = [
     name: "Animeya",
     tags: ["anime"],
     url: "https://animeya.cc/watch/{TITLE_SLUG}-{ANILIST}"
+  },
+  
+  {
+    name: "OniAnime",
+    tags: ["anime"],
+    url: "https://onianime.eu/catalog?search={TITLE}"
+  },
+
+  {
+    name: "ani.pm",
+    tags: ["anime"],
+    url: "https://ani.pm/anime?q={TITLE}"
+  },
+  
+  {
+    name: "PimpAnime",
+    tags: ["anime"],
+    url: "https://pimpanime.nl/search.php?q={TITLE_PLUS}"
   },
   
   {
