@@ -489,17 +489,17 @@ const SITES = [
     url: "https://just4anime.online/watch/{ANILIST}?n={NEXT_E}&server=jin&type=sub"
   },
 
-  {
+  /*{
     name: "Shiroko",
     tags: ["anime"],
     url: "https://shiroko.co/watch?id={ANILIST}&n={NEXT_E}&dub=false&provider=zen"
-  },
+  }, */
   
-  {
+  /*{
     name: "AniKitty",
     tags: ["anime"],
     url: "https://anikitty.moe/anime/watch?anime={ANILIST}&episode=ep-{NEXT_E}"
-  },
+  },*/
   
   {
     name: "AniKuro",
@@ -508,17 +508,23 @@ const SITES = [
   },
   
   {
+    name: "AnimeFrenzy",
+    tags: ["anime"],
+    url: "https://animefrenzy.cc/watch/{ANILIST}/{NEXT_E}"
+  },
+  
+  {
     name: "AniChan",
     tags: ["anime"],
     url: "https://anichan.net/anime/{ANILIST}?ep={NEXT_E}"
   },
   
- /* {
-    name: "Animax",
+  {
+    name: "AniLast",
     tags: ["anime"],
-    url: "https://animaxanime.vercel.app/watch/{IMDB_MAL}-{TITLE_SLUG}/{NEXT_E}"
+    url: "https://last1234.fun/watch/{ANILIST}/{NEXT_E}?anilistId={ANILIST}"
   },
- */ 
+ 
   {
     name: "2dhive",
     tags: ["anime"],
@@ -529,6 +535,24 @@ const SITES = [
     name: "AniXo",
     tags: ["anime"],
     url: "https://anixo.online/watch/{ANILIST}?ep={NEXT_E}"
+  },
+  
+  {
+    name: "WatchAnimeX",
+    tags: ["anime"],
+    url: "https://watchanimez.me/watch/{ANILIST}?ep={NEXT_E}"
+  },
+  
+  {
+    name: "YomeZone",
+    tags: ["anime"],
+    url: "https://yumezone.live/watch/{ANILIST}/{NEXT_E}"
+  },
+
+  {
+    name: "Yenime",
+    tags: ["anime"],
+    url: "https://yenime.net/watch/{ANILIST}/{NEXT_E}"
   },
   
   {
@@ -555,11 +579,11 @@ const SITES = [
     url: "https://sankanime.web.id/watch/{TITLE_SLUG}-{ANILIST}?ep={NEXT_E}"
   },
 
-  {
+  /*{
     name: "PirateXPlay",
     tags: ["anime"],
     url: "https://piratexplay.cc/episode/{TITLE_SLUG}-season-{NEXT_S}-{TMDB}-{NEXT_S}x{NEXT_E}/"
-  },
+  }, */
   
   {
     name: "Zanora",
@@ -574,9 +598,21 @@ const SITES = [
   },
 
   {
+    name: "AniLight",
+    tags: ["anime"],
+    url: "https://anilight.live/watch/{TITLE_SLUG}?ep={NEXT_E}&server=light&lang=sub"
+  },
+  
+  {
     name: "ANIMOTVSLASH",
     tags: ["anime"],
     url: "https://animotvslash.org/{TITLE_SLUG}-episode-{NEXT_E}/"
+  },
+  
+  {
+    name: "Aniwatch",
+    tags: ["anime"],
+    url: "https://aniwatchtv.com.ro/{TITLE_SLUG}-episode-{NEXT_E}/"
   },
   
   {
@@ -615,17 +651,11 @@ const SITES = [
     url: "https://anikoto.cz/filter?keyword={TITLE_PLUS}"
   },
   
-  {
+  /*{
     name: "AnimeWorld",
     tags: ["anime"],
     url: "https://watchanimeworld.net/?s={TITLE_PLUS}"
-  },
-  
-  {
-    name: "All Manga",
-    tags: ["anime"],
-    url: "https://allmanga.to/search-anime?cty=ALL&query={TITLE}"
-  },
+  }, */
   
   {
     name: "AnimixPlay",
@@ -633,11 +663,11 @@ const SITES = [
     url: "https://animixplay.fun/?q={TITLE}"
   },
   
-  {
+  /*{
     name: "Anime Episode Series",
     tags: ["anime"],
     url: "https://animeepisodeseries.com/?s={TITLE_PLUS}"
-  },
+  }, */
 
   {
     name: "aniWave",
@@ -645,17 +675,17 @@ const SITES = [
     url: "https://aniwaves.ru/filter?keyword={TITLE_PLUS}"
   },
   
-  {
+  /*{
     name: "KissAnime",
     tags: ["anime"],
     url: "https://kissanime.com.ru/Search/?s={TITLE_PLUS}"
-  },
+  }, */
   
-  {
+  /*{
     name: "animehub",
     tags: ["anime"],
     url: "https://animehub.ac/search/{TITLE_PLUS}"
-  },
+  }, */
   
   {
     name: "UniqueStream",
@@ -670,15 +700,9 @@ const SITES = [
   },
   
   {
-    name: "AnimeLibre",
-    tags: ["anime"],
-    url: "https://animelibre.com/en/search?q={TITLE_PLUS}&sort=name"
-  },
-  
-  {
     name: "Animelok",
     tags: ["anime"],
-    url: "https://animelok.online/search?keyword={TITLE_PLUS}"
+    url: "https://animelok.live/search?keyword={TITLE_PLUS}"
   },
   
   {
@@ -691,7 +715,7 @@ const SITES = [
     name: "zenkai",
     tags: ["anime"],
     url: "https://zenkai.to/filter?keyword={TITLE_PLUS}"
-  },
+  }, 
   
   {
     name: "Anizone",
@@ -711,17 +735,11 @@ const SITES = [
     url: "https://kaa.lt/search?q={TITLE}"
   },
   
-  {
-    name: "Yenime",
-    tags: ["anime"],
-    url: "https://yenime.net/search?name={TITLE}&parameter=title"
-  },
-  
-  {
+  /*{
     name: "AnimeVerse",
     tags: ["anime"],
     url: "https://animeverse.to/search?q={TITLE_PLUS}"
-  },
+  }, */
   
   {
     name: "AniDB",
@@ -729,23 +747,17 @@ const SITES = [
     url: "https://anidb.app/browse?q={TITLE}"
   },
   
-  {
+  /*{
     name: "Anify",
     tags: ["anime"],
     url: "https://anify.to/search/?searchtext={TITLE}"
-  },
+  }, */
   
-  {
+  /*{
     name: "RamenFlix",
     tags: ["anime"],
     url: "https://www.ramenflix.com/search?keyword={TITLE}"
-  },
-  
-  {
-    name: "AniLight",
-    tags: ["anime"],
-    url: "https://anilight.live/browse?q={TITLE_PLUS}"
-  },
+  }, */
   
   {
     name: "Animeyubi",
@@ -759,16 +771,22 @@ const SITES = [
     url: "https://anibd.app/?s={TITLE_PLUS}"
   },
   
-  {
+  /*{
     name: "Anime-Loads",
     tags: ["anime"],
     url: "https://www.anime-loads.org/search?q={TITLE_PLUS}"
-  },
+  }, */
   
-  {
+  /*{
     name: "AV1please",
     tags: ["anime"],
     url: "https://av1please.com/anime/{TITLE_SLUG}"
+  }, */
+  
+  {
+    name: "Animegers",
+    tags: ["anime"],
+    url: "https://animegers.com/search?keyword={TITLE_PLUS}"
   },
   
   /* ── MOVIE SPECIALISTS ─────────────────────────────────── */
