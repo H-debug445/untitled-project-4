@@ -443,9 +443,9 @@
      If a site uses non-standard type strings (e.g., "serial" instead of "tv"),
      you can define a custom mapping inline instead of hardcoding it in JS.
      
-     Syntax: {!TYPE TV="value" ANIME="value" MOVIE="value"}
+     Syntax: {!TYPE TV='value' ANIME='value' MOVIE='value'}
      
-     Example: {!TYPE TV="serial" ANIME="serial" MOVIE="film"}
+     Example: {!TYPE TV='serial' ANIME='serial' MOVIE='film'}
      • If current type is TV, outputs "serial"
      • If current type is ANIME, outputs "serial"  
      • If current type is MOVIE, outputs "film"
@@ -457,9 +457,9 @@
      If a site requires different IDs depending on the media type 
      (e.g., TMDB for movies/TV, but AniList for anime), you can map them inline.
      
-     Syntax: {!ID TV="param_name" ANIME="param_name" MOVIE="param_name"}
+     Syntax: {!ID TV='param_name' ANIME='param_name' MOVIE='param_name'}
      
-     Example: {!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"}
+     Example: {!ID TV='tmdb' ANIME='anilist' MOVIE='tmdb'}
      • If current type is TV, outputs the TMDB ID
      • If current type is ANIME, outputs the ANILIST ID
      • If current type is MOVIE, outputs the TMDB ID
@@ -914,13 +914,13 @@ const SITES = [
   {
     name: "AniCine",
     tags: ["movies", "series", "anime"],
-    url: "https://anicine.xyz/watch/{TYPE}/{!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"}-{TITLE_SLUG}?s={NEXT_S}&e={NEXT_E}"
+    url: "https://anicine.xyz/watch/{TYPE}/{!ID TV='tmdb' ANIME='anilist' MOVIE='tmdb'}-{TITLE_SLUG}?s={NEXT_S}&e={NEXT_E}"
   },
 
   {
     name: "ZenCine",
     tags: ["movies", "series", "anime"],
-    url: "https://zencine.org/{!TYPE TV="series" ANIME="anime" MOVIE="movies"}/{!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"}?watch=1&season={NEXT_S}&episode={NEXT_E}"
+    url: "https://zencine.org/{!TYPE TV='series' ANIME='anime' MOVIE='movies'}/{!ID TV='tmdb' ANIME='anilist' MOVIE='tmdb'}?watch=1&season={NEXT_S}&episode={NEXT_E}"
   },
   
   {
@@ -956,7 +956,7 @@ const SITES = [
   {
     name: "NOVA",
     tags: ["movies", "series", "anime"],
-    url: "https://novahd.cc/watch/{!TYPE TV="s" ANIME="s" MOVIE="m"}/{TMDB}/{NEXT_S}/{NEXT_E}"
+    url: "https://novahd.cc/watch/{!TYPE TV='s' ANIME='s' MOVIE='m'}/{TMDB}/{NEXT_S}/{NEXT_E}"
   },
   
   {
@@ -980,7 +980,7 @@ const SITES = [
   {
     name: "Vivarium",
     tags: ["movies", "series", "anime"],
-    url: "https://vivarium.wtf/{!TYPE TV="s" ANIME="s" MOVIE="m"}/{TITLE_SLUG}-{TMDB}?w=1&s={NEXT_S}&e={NEXT_E}"
+    url: "https://vivarium.wtf/{!TYPE TV='s' ANIME='s' MOVIE='m'}/{TITLE_SLUG}-{TMDB}?w=1&s={NEXT_S}&e={NEXT_E}"
   },
 
   {
@@ -992,13 +992,13 @@ const SITES = [
   {
     name: "Cinemove",
     tags: ["movies", "series", "anime"],
-    url: "https://cinemove.cc/watch/{!TYPE TV="show" ANIME="show" MOVIE="movie"}/{TMDB}?s={NEXT_S}&e={NEXT_E}"
+    url: "https://cinemove.cc/watch/{!TYPE TV='show' ANIME='show' MOVIE='movie'}/{TMDB}?s={NEXT_S}&e={NEXT_E}"
   },
 
   {
     name: "Streamo",
     tags: ["movies", "series", "anime"],
-    url: "https://streamo.pro/{!TYPE TV="series" ANIME="anime" MOVIE="movies"}/{TMDB}?play=1&s={NEXT_S}&e={NEXT_E}"
+    url: "https://streamo.pro/{!TYPE TV='series' ANIME='anime' MOVIE='movies'}/{TMDB}?play=1&s={NEXT_S}&e={NEXT_E}"
   },
 
   {
@@ -1274,7 +1274,7 @@ const SITES = [
   {
     name: "Overlook",
     tags: ["movies", "series", "anime"],
-    url: "https://overlook.cx/{!TYPE TV="shows" ANIME="shows" MOVIE="movies"}/{TMDB}"
+    url: "https://overlook.cx/{!TYPE TV='shows' ANIME='shows' MOVIE='movies'}/{TMDB}"
   },
 
   {
@@ -1292,7 +1292,7 @@ const SITES = [
   {
     name: "dulo.tv",
     tags: ["movies", "series", "anime"],
-    url: "https://dulo.cx/{!ID TV="" ANIME="" MOVIE="movies"}?info={TYPE_TV}:{TMDB}"
+    url: "https://dulo.cx/{!ID TV='' ANIME='' MOVIE='movies'}?info={TYPE_TV}:{TMDB}"
   },
   
   {
