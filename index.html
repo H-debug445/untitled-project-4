@@ -542,6 +542,24 @@ const SITES = [
     tags: ["anime"],
     url: "https://watchanimez.me/watch/{ANILIST}?ep={NEXT_E}"
   },
+
+  {
+    name: "Kaizoku",
+    tags: ["anime"],
+    url: "https://anime.kaizoku.site/watch/anime/{ANILIST}?ep={NEXT_E}"
+  },
+
+  {
+    name: "CortexAnime",
+    tags: ["anime"],
+    url: "https://www.cortanime.eu/watch/{ANILIST}/{NEXT_E}"
+  },
+
+  {
+    name: "0Neko",
+    tags: ["anime"],
+    url: "https://0neko.cc/#/watch/{ANILIST}/{NEXT_E}"
+  },
   
   /*{
     name: "YomeZone",
@@ -556,9 +574,39 @@ const SITES = [
   },
   
   {
+    name: "AnimeTV+",
+    tags: ["anime"],
+    url: "https://animetvplus.xyz/watch/{TITLE_SLUG}-{IMDB_MAL}/episode-{NEXT_E}"
+  },
+  
+  {
     name: "AniStream",
     tags: ["anime"],
     url: "https://anistream.one/watch/{TITLE_SLUG}-{ANILIST}-episode-{NEXT_E}"
+  },
+
+  {
+    name: "LuffyTV",
+    tags: ["anime"],
+    url: "https://luffytv.live/watch/{ANILIST}/{TITLE_SLUG}?ep={NEXT_E}"
+  },
+  
+  {
+    name: "AniChan",
+    tags: ["anime"],
+    url: "https://anichan.to/anime/{ANILIST}/{TITLE_SLUG}/{NEXT_E}"
+  },
+
+  {
+    name: "AnimeDex",
+    tags: ["anime"],
+    url: "https://animedex.fun/watch/{TITLE_SLUG}-{ANILIST}/ep-{NEXT_E}"
+  },
+
+  {
+    name: "AniClipse",
+    tags: ["anime"],
+    url: "https://aniclipse.com/watch/{ANILIST}/{TITLE_SLUG}/episode/{NEXT_E}?server=megaplay&type=sub"
   },
   
    /* {
@@ -628,6 +676,18 @@ const SITES = [
   },
   
   {
+    name: "KotoTV",
+    tags: ["anime"],
+    url: "https://kototv.to/anime/{TITLE_SLUG}/watch/{NEXT_E}"
+  },
+  
+  {
+    name: "BAnime",
+    tags: ["anime"],
+    url: "https://banime.top/anime/{TITLE_SLUG}"
+  },
+  
+  {
     name: "OniAnime",
     tags: ["anime"],
     url: "https://onianime.eu/catalog?page=1&search={TITLE_PLUS}"
@@ -637,6 +697,12 @@ const SITES = [
     name: "ani.pm",
     tags: ["anime"],
     url: "https://ani.pm/anime?q={TITLE}"
+  },
+
+  {
+    name: "anv",
+    tags: ["anime"],
+    url: "https://anv.to/browse?q={TITLE}"
   },
   
   {
@@ -854,6 +920,18 @@ const SITES = [
     tags: ["movies", "series"],
     url: "https://master.fishystream-app.pages.dev/watch/{TMDB}?type={TYPE_TV}&season={NEXT_S}&episode={NEXT_E}"
   }, */
+
+  {
+    name: "Movy",
+    tags: ["movies", "series"],
+    url: "https://www.movy.sx/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  }, 
+
+  {
+    name: "Abibli",
+    tags: ["movies", "series"],
+    url: 'https://abibli.com/{!TYPE TV="series" ANIME="series" MOVIE="movie"}/{TITLE_SLUG}-{YEAR}'
+  },
   
   {
     name: "YesMovies",
@@ -886,6 +964,30 @@ const SITES = [
     tags: ["movies", "series", "anime"],
     url: "https://hexa.su/watch/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
   },
+  
+  {
+    name: "STELLAR",
+    tags: ["movies", "series", "anime"],
+    url: "https://stellar.gdn/watch/{TYPE}/{!ID TV='tmdb' ANIME='anilist' MOVIE='tmdb'}?s={NEXT_S}&e={NEXT_E}"
+  },
+  
+  {
+    name: "ArrowTV",
+    tags: ["movies", "series", "anime"],
+    url: "https://arrowtv.net/{TYPE_TV}/{TMDB}/watch?season={NEXT_S}&episode={NEXT_E}"
+  },
+  
+  {
+    name: "7Movies",
+    tags: ["movies", "series", "anime"],
+    url: "https://7movies.ac/{TYPE_TV}/{TMDB}/watch?season={NEXT_S}&episode={NEXT_E}"
+  },
+  
+  {
+    name: "MeowTV",
+    tags: ["movies", "series", "anime"],
+    url: "https://meowtv.ru/play/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
 
   {
     name: "Coreflix",
@@ -915,6 +1017,30 @@ const SITES = [
     name: "ZenCine",
     tags: ["movies", "series", "anime"],
     url: "https://zencine.org/{!TYPE TV='series' ANIME='anime' MOVIE='movies'}/{!ID TV='tmdb' ANIME='anilist' MOVIE='tmdb'}?watch=1&season={NEXT_S}&episode={NEXT_E}"
+  },
+
+  {
+    name: "FishyStream",
+    tags: ["movies", "series", "anime"],
+    url: "https://fishystream-app.pages.dev/watch/{TMDB}?type={!TYPE TV='tv' ANIME='tv' MOVIE='movie'}&season={NEXT_S}&episode={NEXT_E}&dub=true "
+  },
+
+  {
+    name: "ThugTV",
+    tags: ["movies", "series", "anime"],
+    url: "https://thugtv.online/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}?play=1&s={NEXT_S}&e={NEXT_E}"
+  },
+  
+  {
+    name: "FLIKER",
+    tags: ["movies", "series", "anime"],
+    url: "https://fliker.freebuff.app/watch/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+
+  {
+    name: "Warflix",
+    tags: ["movies", "series", "anime"],
+    url: "https://warflix.im/{!TYPE TV='series' ANIME='series' MOVIE='film'}/{TMDB}?season={NEXT_S}&episode={NEXT_E}"
   },
   
   {
@@ -970,11 +1096,17 @@ const SITES = [
     tags: ["movies", "series", "anime"],
     url: "https://nextbox.uno/player/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}"
   },*/
-
+  
+  {
+    name: "Reelix",
+    tags: ["movies", "series", "anime"],
+    url: "https://reelix.ac/watch/{TYPE_TV}/{TITLE_SLUG}-{TMDB}?s={NEXT_S}&e={NEXT_E}"
+  },
+  
   {
     name: "Vivarium",
     tags: ["movies", "series", "anime"],
-    url: "https://vivarium.wtf/{!TYPE TV='s' ANIME='s' MOVIE='m'}/{TITLE_SLUG}-{TMDB}?w=1&s={NEXT_S}&e={NEXT_E}"
+    url: "https://vivarium.su/{!TYPE TV='s' ANIME='s' MOVIE='m'}/{TITLE_SLUG}-{TMDB}?w=1&s={NEXT_S}&e={NEXT_E}"
   },
 
   {
@@ -1180,11 +1312,53 @@ const SITES = [
     tags: ["movies", "series", "anime"],
     url: 'https://streamgoblin.com/player/{TYPE_TV}/{TMDB}{!TYPE TV="/season/" ANIME="/season/" MOVIE=" "}{NEXT_S}{!TYPE TV="/episode/" ANIME="/episode/" MOVIE=" "}{NEXT_E}'
   },
+
+  {
+    name: "Zoryva",
+    tags: ["movies", "series", "anime"],
+    url: 'https://zoryva.me/{!TYPE TV="tv" ANIME="anime" MOVIE="movie"}/{!ID TV="tmdb" ANIME="anilist" MOVIE="tmdb"}/{TITLE_SLUG}/{NEXT_S}/{NEXT_E}'
+  },
+
+  {
+    name: "PopWatch",
+    tags: ["movies", "series", "anime"],
+    url: 'https://popwatch.to/watch/{!TYPE TV="tv" ANIME="tv" MOVIE="movie"}/{TMDB}{!TYPE TV="/season/" ANIME="/season/" MOVIE=""}{NEXT_S}{!TYPE TV="/episode/" ANIME="/episode/" MOVIE=""}{NEXT_E}'
+  },
   
   {
     name: "WatchOrbit",
     tags: ["movies", "series", "anime"],
     url: 'https://watchorbit.me/player/{TYPE_TV}/{TMDB}/{NEXT_S}/{NEXT_E}?src=0&srckey=vidsrc'
+  },
+
+  {
+    name: "Nxsha",
+    tags: ["movies", "series", "anime"],
+    url: "https://web.nxsha.app/watch/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}/{NEXT_S}/{NEXT_E}"
+  },
+
+  {
+    name: "NippleFlix",
+    tags: ["movies", "series", "anime"],
+    url: "https://nippleflix.com/play?id={TMDB}&type={!TYPE TV='tv' ANIME='tv' MOVIE='movie'}&season={NEXT_S}&episode={NEXT_E}"
+  },
+  
+  {
+    name: "frameXTV",
+    tags: ["movies", "series", "anime"],
+    url: 'https://framextv.xyz/watch/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "ToFlix",
+    tags: ["movies", "series", "anime"],
+    url: "https://toflix.co/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}?play=true&s={NEXT_S}&e={NEXT_E}"
+  },
+  
+  {
+    name: "LightFlix",
+    tags: ["movies", "series", "anime"],
+    url: "https://lightflix.app/en/watch/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}-{NEXT_S}-{NEXT_E}"
   },
   
   /*{
@@ -1205,6 +1379,42 @@ const SITES = [
     url: 'https://popcornmovies.ac/watch/{TYPE_TV}/{TMDB}?s={NEXT_S}&e={NEXT_E}'
   },
 
+  {
+    name: "Atlantic",
+    tags: ["movies", "series", "anime"],
+    url: 'https://atlantic.st/watch/{TMDB}/{NEXT_S}/{NEXT_E}'
+  },
+  
+  {
+    name: "ChillFlix",
+    tags: ["movies", "series", "anime"],
+    url: "https://www.chillflix.lol/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}?play=true&s={NEXT_S}&e={NEXT_E}"
+  },
+  
+  {
+    name: "Stellar",
+    tags: ["movies", "series", "anime"],
+    url: "https://stellar.rip/en/watch/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}-{NEXT_S}-{NEXT_E}"
+  },
+
+  {
+    name: "Moanatv",
+    tags: ["movies", "series", "anime"],
+    url: "https://moanatv.lfmx.app/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/watch/{TMDB}?s={NEXT_S}&e={NEXT_E}"
+  },
+  
+  {
+    name: "MovieNerds",
+    tags: ["movies", "series", "anime"],
+    url: "https://movienerds.site/watch/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}?season={NEXT_S}&episode={NEXT_E}"
+  },
+
+  {
+    name: "Smashy Stream",
+    tags: ["movies", "series", "anime"],
+    url: "https://smashystream.xyz/{!TYPE TV='tv' ANIME='tv' MOVIE='movie'}/{TMDB}/watch?season={NEXT_S}&episode={NEXT_E}"
+  },
+  
   /*{
     name: "ZXC[Stream]",
     tags: ["movies", "series", "anime"],
@@ -1228,7 +1438,31 @@ const SITES = [
     tags: ["movies", "series", "anime"],
     url: 'https://watch.cinewave.qzz.io/details/{TYPE_TV}/{TMDB}'
   },
-
+  
+  {
+    name: "SvStream",
+    tags: ["movies", "series", "anime"],
+    url: "https://svstream.cc/#/{!TYPE TV='t' ANIME='a' MOVIE='m'}/{!ID TV='tmdb' ANIME='anilist' MOVIE='tmdb'}/{TITLE_SLUG}"
+  },
+  
+  {
+    name: "Flystream",
+    tags: ["movies", "series", "anime"],
+    url: "https://flystream.net/{!TYPE TV='tv' ANIME='anime/anilist' MOVIE='movie'}/{!ID TV='tmdb' ANIME='anilist' MOVIE='tmdb'}"
+  },
+  
+  {
+    name: "BoomFlix",
+    tags: ["movies", "series", "anime"],
+    url: 'https://boomflix.pages.dev/title/{TYPE_TV}/{TMDB}'
+  },
+  
+  {
+    name: "3eyedraven",
+    tags: ["movies", "series", "anime"],
+    url: 'https://3eyedraven.watch/title/{TITLE_SLUG}-{TMDB}'
+  },
+  
   {
     name: "Movie Night",
     tags: ["movies", "series", "anime"],
@@ -1372,6 +1606,36 @@ const SITES = [
     name: "FRAME",
     tags: ["movies", "series", "anime"],
     url: "https://www.framemovie.online/#/search?q={TITLE}"
+  },
+
+  {
+    name: "Nepu",
+    tags: ["movies", "series", "anime"],
+    url: "https://nepu.io/search/{TITLE}"
+  },
+
+  {
+    name: "SOAPGO",
+    tags: ["movies", "series", "anime"],
+    url: "https://soapgo.to/search/{TITLE}"
+  },
+  
+  {
+    name: "PressPlayX",
+    tags: ["movies", "series", "anime"],
+    url: "https://pressplayx.to/explore?q={TITLE}"
+  },
+  
+  {
+    name: "FLUXTV",
+    tags: ["movies", "series", "anime"],
+    url: "https://fluxtv.co.uk/#/search?q={TITLE}"
+  },
+
+  {
+    name: "koddo",
+    tags: ["movies", "series", "anime"],
+    url: "https://koddo.ch/en/search?q={TITLE}"
   },
   
   {
